@@ -10,6 +10,39 @@ class ModuleLoader(BaseModuleLoader):
     config = [['mod.taxes', {}]]
     name = 'Taxes Support'
 
+    def load(self):
+        from cbpos.mod.taxes.models import Tax
+        return [Tax]
+    
+    def test(self):
+        from cbpos.mod.taxes.models import Tax
+        from cbpos.mod.currency.models import Currency
+        session = cbpos.database.session()
+        
+        usd = session.query(Currency).filter_by(symbol="USD").one()
+        
+        vat = Tax(name="Value Added Tax", code="VAT", rate=0.1, currency=usd)
+        single = Tax(name="Single Rate Tax", code="SGL", rate=0.2, lower_limit=10, currency=usd)
+        multiple = Tax(name="Range Tax", code="MUL", rate=0.3, lower_limit=100, upper_limit=200, currency=usd)
+        
+        session.add_all([vat, single, multiple])
+        
+        session.commit()
+        
+        """
+        query = session.query(Tax, Tax.type)
+        results = query.all()
+        logger.debug(query)
+        logger.debug(results)
+        
+        logger.debug('SINGLE: {}'.format(Tax.SINGLE))
+        logger.debug('DEP_SINGLE: {}'.format(Tax.DEPENDENT_SINGLE))
+        logger.debug('DEP_RANGE: {}'.format(Tax.DEPENDENT_RANGE))
+        
+        for t in results:
+            logger.debug([t[0].code, t[0].type, t[1]])
+        """
+
     def init(self):
         dispatcher.connect(self.onTaxesUpdate, signal='update-taxes')
         
@@ -25,4 +58,4 @@ class ModuleLoader(BaseModuleLoader):
         
         if manager.ticket is not None:
             for tl in manager.ticket.ticketlines:
-                tl.taxes = 0.1*tl.sell_price*tl.amount
+                tl.taxes = tl.sell_price*tl.amount/10
