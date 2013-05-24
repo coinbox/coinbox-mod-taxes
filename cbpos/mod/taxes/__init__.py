@@ -6,7 +6,7 @@ from cbpos.modules import BaseModuleLoader
 logger = cbpos.get_logger(__name__)
 
 class ModuleLoader(BaseModuleLoader):
-    dependencies = ('base', 'currency', 'sales')
+    dependencies = ('base', 'currency', 'stock', 'sales')
     config = [['mod.taxes', {}]]
     name = 'Taxes Support'
 
@@ -28,20 +28,6 @@ class ModuleLoader(BaseModuleLoader):
         session.add_all([vat, single, multiple])
         
         session.commit()
-        
-        """
-        query = session.query(Tax, Tax.type)
-        results = query.all()
-        logger.debug(query)
-        logger.debug(results)
-        
-        logger.debug('SINGLE: {}'.format(Tax.SINGLE))
-        logger.debug('DEP_SINGLE: {}'.format(Tax.DEPENDENT_SINGLE))
-        logger.debug('DEP_RANGE: {}'.format(Tax.DEPENDENT_RANGE))
-        
-        for t in results:
-            logger.debug([t[0].code, t[0].type, t[1]])
-        """
 
     def init(self):
         dispatcher.connect(self.onTaxesUpdate, signal='update-taxes')

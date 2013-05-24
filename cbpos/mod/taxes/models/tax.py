@@ -19,7 +19,7 @@ class Tax(cbpos.database.Base, common.Item):
     upper_limit = Column(Float, nullable=True)
     currency_id = Column(String(3), ForeignKey('currencies.id'))
 
-    currency = relationship("Currency", backref="taxes")
+    currency = relationship("Currency", backref=backref("taxes", lazy='dynamic'))
 
     HAS_LOWER = 1
     HAS_UPPER = 2
