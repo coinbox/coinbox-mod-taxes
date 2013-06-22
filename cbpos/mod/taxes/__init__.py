@@ -7,7 +7,6 @@ logger = cbpos.get_logger(__name__)
 
 class ModuleLoader(BaseModuleLoader):
     dependencies = ('base', 'currency', 'stock', 'sales')
-    config = [['mod.taxes', {}]]
     name = 'Taxes Support'
 
     def load(self):
