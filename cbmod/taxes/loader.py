@@ -7,12 +7,12 @@ logger = cbpos.get_logger(__name__)
 
 class ModuleLoader(BaseModuleLoader):
     def load_models(self):
-        from cbpos.mod.taxes.models import Tax
+        from cbmod.taxes.models import Tax
         return [Tax]
     
     def test_models(self):
-        from cbpos.mod.taxes.models import Tax
-        from cbpos.mod.currency.models import Currency
+        from cbmod.taxes.models import Tax
+        from cbmod.currency.models import Currency
         session = cbpos.database.session()
         
         usd = session.query(Currency).filter_by(symbol="USD").one()

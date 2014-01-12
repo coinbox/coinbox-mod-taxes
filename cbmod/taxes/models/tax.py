@@ -1,8 +1,8 @@
 import cbpos
 
-import cbpos.mod.base.models.common as common
+import cbmod.base.models.common as common
 
-import cbpos.mod.currency.controllers as currency
+import cbmod.currency.controllers as currency
 
 from sqlalchemy import func, cast, Table, Column, Integer, String, Float, Boolean, Enum, DateTime, MetaData, ForeignKey
 from sqlalchemy.orm import relationship, backref
