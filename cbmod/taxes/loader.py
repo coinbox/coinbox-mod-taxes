@@ -15,7 +15,7 @@ class ModuleLoader(BaseModuleLoader):
         from cbmod.currency.models import Currency
         session = cbpos.database.session()
         
-        usd = session.query(Currency).filter_by(symbol="USD").one()
+        usd = session.query(Currency).filter_by(id="USD").one()
         
         vat = Tax(name="Value Added Tax", code="VAT", rate=0.1, currency=usd)
         single = Tax(name="Single Rate Tax", code="SGL", rate=0.2, lower_limit=10, currency=usd)
